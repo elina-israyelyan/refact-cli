@@ -14,19 +14,32 @@ async def refact(refact_request: RefactRequest):
     try:
         async with ClientSession() as client_session:
             client = RefactClient(client_session)
+            last_determined_point = None
             async for line in client.refact(refact_request):
                 if line.startswith("Thought"):
+                    last_determined_point = "Thought"
                     print(Colors.Thought + line + Colors.End)
                     print(Colors.Thought + "-" * 9 + Colors.End)
                 elif line.startswith("Observation"):
+                    last_determined_point = "Observation"
                     print(Colors.Observation + line + Colors.End)
                     print(Colors.Observation + "-" * 13 + Colors.End)
                 elif line.startswith("Final answer"):
+                    last_determined_point = "Final answer"
                     print(Colors.FinalAnswer + line + Colors.End)
+                else:
+                    if last_determined_point == "Thought":
+                        print(Colors.Thought + line + Colors.End)
+                    elif last_determined_point == "Observation":
+                        print(Colors.Observation + line + Colors.End)
+                    elif last_determined_point == "Final answer":
+                        print(Colors.FinalAnswer + line + Colors.End)
+                    else:
+                        print(Colors.Neutral + line + Colors.End)
     except ClientResponseError as e:
-        print(f"Error: {e.message}")
+        print(Colors.Error + f"Error: {e.message}" + Colors.End)
     except Exception as e:
-        print(f"Error: Unknown issue.")
+        print(Colors.Error + f"Error: Unknown issue." + Colors.End)
 
 
 def refact_cli_loop():

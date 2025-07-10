@@ -5,11 +5,16 @@ from aiohttp import ClientResponseError, ClientSession
 
 from refact.config import Colors
 from refact.refact_client.client import RefactClient
-from refact.refact_client.models import (ActRequest, MathActionsDivide,
-                                         MathActionsMultiply, MathActionsPower,
-                                         MathActionsSubtract, MathActionsSum,
-                                         SearchActionsLookup,
-                                         SearchActionsSearch)
+from refact.refact_client.models import (
+    ActRequest,
+    MathActionsDivide,
+    MathActionsMultiply,
+    MathActionsPower,
+    MathActionsSubtract,
+    MathActionsSum,
+    SearchActionsLookup,
+    SearchActionsSearch,
+)
 
 
 async def act(action: ActRequest):
@@ -19,9 +24,9 @@ async def act(action: ActRequest):
             response = await client.act(action)
             print(Colors.FinalAnswer + str(response.result) + Colors.End)
     except ClientResponseError as e:
-        print(f"Error: {e.message}")
+        print(Colors.Error + f"Error: {e.message}" + Colors.End)
     except Exception as e:
-        print(f"Error: Unknown issue.")
+        print(Colors.Error + f"Error: Unknown issue." + Colors.End)
 
 
 def act_cli_loop():

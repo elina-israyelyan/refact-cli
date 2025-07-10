@@ -16,9 +16,9 @@ async def reason(reason_request: ReasonRequest):
             response = await client.reason(reason_request)
             print(Colors.FinalAnswer + response.text + Colors.End)
     except ClientResponseError as e:
-        print(f"Error: {e.message}")
+        print(Colors.Error + f"Error: {e.message}" + Colors.End)
     except Exception as e:
-        print(f"Error: Unknown issue.")
+        print(Colors.Error + f"Error: Unknown issue." + Colors.End)
 
 
 def reason_cli_loop():

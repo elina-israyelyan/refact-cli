@@ -49,7 +49,6 @@ class RefactClient:
         ) as response:
             if response.status != 200:
                 await self._handle_response_error(response)
-
             async for line in response.content:
                 if line:
                     yield line.decode("utf-8")
